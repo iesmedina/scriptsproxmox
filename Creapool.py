@@ -11,11 +11,21 @@
 
 import subprocess
 def creapool(nombre):
+    
+    #componenmos el nombre del pool
     pool="pool_"+nombre
+    #componemos la ruta del pool
     ruta="/pool/"+nombre
-    orden=subprocess.run(["pvesh","create","pools","--poolid",pool])
-    orden=subprocess.run(["pvesh","set","/access/acl","--path",ruta,"--roles","PVEAdmin","--users",nombre+"@pve"])
+    #creamos el pool
+    subprocess.run(["pvesh","create","pools","--poolid",pool])
+    #añadimos el almacenamiento al pool
+    subprocess.run(["pvesh","set","/pools/"+pool,"-storage","local"])
+    subprocess.run(["pvesh","set","pools/"+pool,"-storage","local-lvm"])
+
+    #le damos el permiso al usuario sobre el pool
+    subprocess.run(["pvesh","set","/access/acl","--path",ruta,"--roles","PVEAdmin","--users",nombre+"@pve"])
     return 0
+
 def main(args):
     return 0
 

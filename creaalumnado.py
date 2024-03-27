@@ -32,9 +32,11 @@ def main(args):
         nombre="al_"+valores[0] #añadimos al nombre el sufijo al_ para distinguir al alumnado. Esto facilitará el borrado masivo
         password=valores[1]
         grupo=valores[2]
-        creausuario(nombre,password,grupo) #creamos el usuario
-        creapool(nombre) #creamos su pool y le damos permiso sobre él
-    return 0
+        #CREAMOS EL USUARIO
+        creausuario(nombre,password,grupo)
+        #CREAMOS SU POOL
+        creapool(nombre)
+        return 0
 
 if __name__=='__main__':
     import sys
