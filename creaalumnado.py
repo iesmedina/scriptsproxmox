@@ -20,6 +20,7 @@
 ########################################################
 from Creausuario import creausuario
 from Creapool import creapool
+from Creamaquina import creamaquina
 def main(args):
     archivo=args[1]
     try:
@@ -33,17 +34,25 @@ def main(args):
         password=valores[1]
         grupo=valores[2]
         #CREAMOS EL USUARIO
+        print("Creando usuario "+nombre+"@pve...")
         creausuario(nombre,password,grupo)
         #CREAMOS SU POOL
         creapool(nombre)
-        return 0
+        print("Creando máquinas virtuales para "+nombre+"@pve...")
+        #CREAMOS SUS MÁQUINAS
+        maquinas=args[2]
+        creamaquina(nombre,maquinas)
+    return 0
 
 if __name__=='__main__':
     import sys
     import argparse
     parser=argparse.ArgumentParser()
-    parser.add_argument("archivo",
+    parser.add_argument("nombre",
                         type=str,
                         help="Nombre del archivo que contiene el listado de alumnos")
+    parser.add_argument("maquinas",
+                        type=str,
+                        help="Nombre del archivo que contiene el listado de máquinas")
     args=parser.parse_args()
     sys.exit(main(sys.argv))

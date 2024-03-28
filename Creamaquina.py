@@ -20,8 +20,9 @@ def creamaquina(usuario,maquinas):
         f=open(maquinas,'r')
     except FileNotFoundError:
         print("Fichero de datos no encontrado")
-    for linea in f:
+    for linea in f: #recorremos las líneas del fichero que contiene las máquinas
         linea=linea.rstrip() #eliminamos el salto de línea
+        
         #extraemos los datos de la línea: id de la plantilla a clonar y nombre de máquina a crear
         valores=linea.split(',')
         idplantilla=valores[0]
@@ -29,15 +30,13 @@ def creamaquina(usuario,maquinas):
         
         #caculamos el próximo id de máquina
         orden=subprocess.run(["pvesh","get","cluster/nextid"],stdout=subprocess.PIPE)
-        idmaquina=orden.stdout
-        idmaquina=idmaquina.decode('UTF-8')
+        idmaquina=orden.stdout #recogemos la salida de la orden
+        idmaquina=idmaquina.decode('UTF-8') #transformamos la salida a tipo str
         idmaquina=idmaquina.rstrip() #quitamos el salto de línea del final de la cadena
-        print(type(idplantilla),type(pool),type(idmaquina),type(nombremaquina))
+        
         #creamos la máquina
-        #orden="pvesh create /nodes/pve/qemu/"+idplantilla+"/clone --pool="+pool+" --newid "+idmaquina+" --name "+nombremaquina+" --full"
-        #print(orden)
-        #subprocess.run(orden)
-        subprocess.run(["pvesh","create","/nodes/pve/qemu/"+idplantilla+"/clone","--pool="+pool,"--newid "+idmaquina,"--name",nombremaquina,"--full"])
+        print("Creando máquina "+nombremaquina+" para "+usuario)
+        subprocess.run(["pvesh","create","/nodes/pve/qemu/"+idplantilla+"/clone","--pool="+pool,"--newid",idmaquina,"--name",nombremaquina,"--full"])
     
     return 0
 
