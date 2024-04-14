@@ -40,8 +40,8 @@ def main(args):
         creapool(nombre)
         print("Creando máquinas virtuales para "+nombre+"@pve...")
         #CREAMOS SUS MÁQUINAS
-        maquinas=args[2]
-        creamaquina(nombre,maquinas)
+        #maquinas=args[2]
+        #creamaquina(nombre,maquinas)
     return 0
 
 if __name__=='__main__':
@@ -51,8 +51,8 @@ if __name__=='__main__':
     parser.add_argument("nombre",
                         type=str,
                         help="Nombre del archivo que contiene el listado de alumnos")
-    parser.add_argument("maquinas",
+    parser.add_argument("-- maquinas",
                         type=str,
-                        help="Nombre del archivo que contiene el listado de máquinas")
+                        help="Opcional. Nombre del archivo que contiene el listado de máquinas")
     args=parser.parse_args()
     sys.exit(main(sys.argv))
