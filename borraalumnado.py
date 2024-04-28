@@ -20,6 +20,7 @@
 from Borrausuario import borrausuario
 from Borrapool import borrapool
 
+
 def main(args):
     archivo=args[1]
     try:
@@ -30,15 +31,15 @@ def main(args):
         linea=linea.rstrip() #eliminamos el salto de línea
         valores=linea.split(",") #segmentamos la cadena separando por , split devuelve una lista
         nombre="al_"+valores[0] #añadimos al nombre el sufijo al_ para distinguir al alumnado. Esto facilitará el borrado masivo
-        
-        #Borramos las máquinas y el pool
-       
+
+     
+
         borrapool(nombre)
-       
+
         #Borramos el usuario
         borrausuario(nombre)
         print("Usuario borrado con éxito")
-        
+
     return 0
 
 if __name__=='__main__':
@@ -48,8 +49,6 @@ if __name__=='__main__':
     parser.add_argument("nombre",
                         type=str,
                         help="Nombre del archivo que contiene el listado de alumnos")
-    parser.add_argument("-- maquinas",
-                        type=str,
-                        help="Opcional. Nombre del archivo que contiene el listado de máquinas")
+
     args=parser.parse_args()
     sys.exit(main(sys.argv))

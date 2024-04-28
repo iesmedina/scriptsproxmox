@@ -4,9 +4,8 @@
 ##          FUNCIÓN QUE BORRA UNA MV                   ###
 ##                                                     ###
 ##  PARÁMETROS DE ENTRADA                              ###
-##    usuario: nombre de usuario                       ###
-##    maquinas: fichero de texto con el listado de     ###
-##              máquinas a crear                       ###
+##    maquina: id de la máquina a borra                ###
+
 ##                                                     ###
 ##########################################################
 
@@ -14,7 +13,10 @@ import subprocess
 def borramaquina(IDmaquina):
     
     #borramos la máquina con el id
+    #esto es una chapuza pero no encuentro cómo saber si un id es de una máquina
+    #o de un contenedor así que lo intento primero como máquina y luego como contenedor
     subprocess.run(["qm","destroy",IDmaquina,"--purge"])
+    subprocess.run(["pct","destroy",IDmaquina,"--purge"])
     
     return 0
 

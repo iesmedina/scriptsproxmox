@@ -10,7 +10,7 @@
 ################################################
 
 import subprocess
-def creapool(nombre):
+def creapool(nombre,rol):
     
     #componenmos el nombre del pool
     pool="pool_"+nombre
@@ -21,7 +21,7 @@ def creapool(nombre):
     subprocess.run(["pvesh","create","pools","--poolid",pool])
     #le damos el permiso al usuario sobre el pool
     #subprocess.run(["pvesh","set","/access/acl","--path",ruta,"--roles","PVEAdmin","--users",nombre+"@pve"])
-    subprocess.run(["pveum","acl","modify","/pool/"+pool+"/","--users",nombre+"@pve","--roles","PVEAdmin"])
+    subprocess.run(["pveum","acl","modify","/pool/"+pool+"/","--users",nombre+"@pve","--roles",rol])
     return 0
 
 def main(args):
@@ -34,7 +34,10 @@ if __name__=='__main__':
     parser.add_argument("nombre",
                          type=str,
                          help="Nombre de usuario PVE")
+    parser.add_argument("rol",
+                        type=str,
+                        help="Rol a asignar")
     args=parser.parse_args()
-    creapool(args.nombre)
+    creapool(args.nombre,args.rol)
     sys.exit(main(sys.argv))
 

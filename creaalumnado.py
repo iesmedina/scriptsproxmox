@@ -23,6 +23,7 @@ from Creapool import creapool
 from Creamaquina import creamaquina
 def main(args):
     archivo=args[1]
+    rol=args[2]
     try:
        f=open(archivo,'r')
     except FileNotFoundError:
@@ -37,10 +38,10 @@ def main(args):
         print("Creando usuario "+nombre+"@pve...")
         creausuario(nombre,password,grupo)
         #CREAMOS SU POOL
-        creapool(nombre)
-        print("Creando máquinas virtuales para "+nombre+"@pve...")
+        creapool(nombre,rol)
+        #print("Creando máquinas virtuales para "+nombre+"@pve...")
         #CREAMOS SUS MÁQUINAS
-        #maquinas=args[2]
+        #maquinas=args[3]
         #creamaquina(nombre,maquinas)
     return 0
 
@@ -51,6 +52,10 @@ if __name__=='__main__':
     parser.add_argument("nombre",
                         type=str,
                         help="Nombre del archivo que contiene el listado de alumnos")
+    parser.add_argument("rol",
+                        type=str,
+                        help="Rol que queremos asignar a los usuarios de usuarios")
+
     parser.add_argument("-- maquinas",
                         type=str,
                         help="Opcional. Nombre del archivo que contiene el listado de máquinas")
