@@ -18,25 +18,54 @@
 ##                                                    ##
 ########################################################
 
+import subprocess
+
+#esta función determina si se ha encontrado la línea "source /etc/network/interfaces.d/* porque hay que escribir antes
+def ultimalinea(cadena):
+    import re
+    patron="source"
+    if (re.match(patron,cadena)):
+        return True
+    else:
+        return False
+
 
 def creabridges(inicio,final):
    
     archivo="/etc/network/interfaces" #archivo de configuración network de proxmox
     bridges=[] #creamos una lista vacía para acoger los bridges que queremos añadir
    
-    try:
-       f=open(archivo,'a')
-    except FileNotFoundError:
-        print("Fichero de datos no encontrado")
-
     for n in range(int(inicio),int(final)+1): #este bucle añade a la lista los números de los bridges a añadir
         nombre="vmbr"+str(n)
         bridges.append(nombre)
 
+    try:
+        f=open(archivo,'r')
+    except FileNotFoundError:
+        print("Fichero de configuración no encontrado")
+
+    listalineas=f.readlines() #creamos una lista con el contenido del fichero
+    f.close
+
+    try:
+        f=open(archivo,'w')
+    except FileNotFoundError:
+        print("Ocurrió un error al crear el fichero de configuración")
+ 
+   #escribimos todas las líneas menos la última
+    for linea in listalineas: 
+        if not ultimalinea(linea):
+            f.write(linea)
+      
+   #escribimos las líneas de los vmbr a crear
     for bridge in bridges: #este bucle recorre la lista , compone la línea a añadir al fichero de configuración y la añade
-        texto="\nauto "+bridge+"\niface "+bridge+"\n      bridge-ports none"+"\n      bridge-stp off"+"\n      bridge-fd 0"
+        texto="\nauto "+bridge+"\niface "+bridge+"\n      bridge-ports none"+"\n      bridge-stp off"+"\n      bridge-fd 0\n"
         f.write(texto)
+
+   #escribimos la última línea
+    f.write("\nsource /etc/network/interfaces.d/*")
     f.close()
+    subprocess.run(["ifreload","-a"])
     return 0
 
 def main(args):
