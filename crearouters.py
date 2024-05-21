@@ -27,6 +27,7 @@
 ##                                                        ##
 ############################################################
 
+
 import subprocess
 
 def main(args):
@@ -68,9 +69,10 @@ def main(args):
 
             #asignamos el bridge al contenero
             subprocess.run(["pct","set",idrouter,"-net1","name=eth1,bridge="+bridges[indice]+",firewall=1,ip=10.100.100.1/24"])
+            #asignamos permiso sobre el bridge
+#pveum acl modify /sdn/zones/localnetwork/vmbr2000 --users al_pepito@pve --roles PVESDNAdmin
+            subprocess.run(["pveum","acl","modify","/sdn/zones/localnetwork/"+bridges[indice], "--users", alumno+"@pve","--roles","PVESDNAdmin"])
             indice+=1
-
-
     return 0
 
 if __name__=='__main__':
