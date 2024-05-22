@@ -35,6 +35,7 @@ def main(args):
     plantilla=args[1] #el primer parámetro es el número de la plantilla a clonar
     inicio=args[3]
     final=args[4]
+    IDtag=args[5]
     alumnos=[] #creamos una lista donde se guardarán el nombre del alumnado
     bridges=[] #creamos una lista donde se guardarán los bridges
     for n in range(int(inicio),int(final)+1):
@@ -72,6 +73,7 @@ def main(args):
             #asignamos permiso sobre el bridge
 #pveum acl modify /sdn/zones/localnetwork/vmbr2000 --users al_pepito@pve --roles PVESDNAdmin
             subprocess.run(["pveum","acl","modify","/sdn/zones/localnetwork/"+bridges[indice], "--users", alumno+"@pve","--roles","PVESDNAdmin"])
+            subprocess.run(["pveum","acl","modify","/sdn/zones/localnetwork/vmbr1/"+IDtag, "--users", alumno+"@pve","--roles","PVESDNUser"])
             indice+=1
     return 0
 
@@ -91,6 +93,9 @@ if __name__=='__main__':
     parser.add_argument("final",
                          type=int,
                          help="final del rango de bridges a asignar")
+    parser.add_argument("vlan",
+                        type=int,
+                        help="Tag de la vlan que le corresponde")
 
     args=parser.parse_args()
     sys.exit(main(sys.argv))

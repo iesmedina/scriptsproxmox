@@ -16,20 +16,22 @@ def borramaquina(IDmaquina):
     #esto es una chapuza pero no encuentro cómo saber si un id es de una máquina
     #o de un contenedor así que lo intento primero como máquina y luego como contenedor
     
-    #orden=subprocess.run(["pct list|grep "+IDmaquina],stdout=subprocess.PIPE)
-    #cambiar las dos siguientes líneas a como están en la imagen del móvil
-    orden=subprocess.run(["pct","list"],stdout=subprocess.PIPE)
-    salida=subprocess(["grep",IDmaquina],stdin=orden.stdout,stdout=subprocess.PIPE)
-    #salida=orden.stdout
-    #salida=salida.decode('UTF-8')
-    if(salida.stdout==""):
-        print("es una maquina")
+    orden=['pct','list']
+    pct=subprocess.Popen(orden,stdout=subprocess.PIPE) #ejecutamos la primera orden y capturamos la salida
+    orden=['grep',IDmaquina]
+    grep=subprocess.Popen(orden,stdin=pct.stdout,stdout=subprocess.PIPE,encoding='utf-8') #ejecutamos grep pasándoloe como entrada la salida anterior
+    pct.stdout.close()
+    maquina=grep.communicate()[0] #el método communicate de la ejecución anterior es una tupla y el primer elemento es la cadena encontrada
+       
+   
+    if(maquina==""):
+        subprocess.run(["qm","stop",IDmaquina])    
+        subprocess.run(["qm","destroy",IDmaquina,"--purge"])    
     else:
-        print("Es un contenedor")
-    #subprocess.run(["qm","stop",IDmaquina])
-    #subprocess.run(["pct","stop",IDmaquina])
-    #subprocess.run(["qm","destroy",IDmaquina,"--purge"])
-    #subprocess.run(["pct","destroy",IDmaquina,"--purge"])
+        subprocess.run(["pct","stop",IDmaquina])
+        subprocess.run(["pct","destroy",IDmaquina,"--purge"])
+         
+    
     
     return 0
 
