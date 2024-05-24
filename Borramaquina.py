@@ -12,9 +12,9 @@
 import subprocess
 def borramaquina(IDmaquina):
     
-    #borramos la máquina con el id
-    #esto es una chapuza pero no encuentro cómo saber si un id es de una máquina
-    #o de un contenedor así que lo intento primero como máquina y luego como contenedor
+    # El siguiente código determina si el Id es de una máquina o de un contendor
+    # Lo hace sacando un listado de los contenedores (pct list) y buscando el
+    # Id de la máquina en él (grep IDmaquina) 
     
     orden=['pct','list']
     pct=subprocess.Popen(orden,stdout=subprocess.PIPE) #ejecutamos la primera orden y capturamos la salida
@@ -23,11 +23,12 @@ def borramaquina(IDmaquina):
     pct.stdout.close()
     maquina=grep.communicate()[0] #el método communicate de la ejecución anterior es una tupla y el primer elemento es la cadena encontrada
        
-   
+    #Si la cadena es vacía es que no se ha encontrado en el listado y es una máquina
+    #En caso contrario, es un contendor
     if(maquina==""):
         subprocess.run(["qm","stop",IDmaquina])    
         subprocess.run(["qm","destroy",IDmaquina,"--purge"])    
-    else:
+    else: 
         subprocess.run(["pct","stop",IDmaquina])
         subprocess.run(["pct","destroy",IDmaquina,"--purge"])
          
