@@ -13,7 +13,7 @@
 
 import subprocess
 
-def listaMVtodos():
+def listarMVtodos():
 
     #Abrimos el archivo de configuración y buscamos las líneas donde se almacenan el id
     #de las máquinas del usuario
@@ -38,6 +38,6 @@ def main(args):
 
 if __name__=='__main__':
     import sys
-    listaMVtodos()
+    listarMVtodos()
     sys.exit(main(sys.argv))
 

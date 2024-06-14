@@ -1,39 +1,38 @@
 #!/usr/bin/python3
 
 ###############################################################################
-##  FUNCIÓN QUE MUESTRA LAS MÁQUINAS DE TODOS USUARIO PVE PROXMOX           ###
+##  SCRIPT QUE MUESTRA UN MENÚ CON DISTINTAS FUNCIONALIDADES DE LISTADO     ###
+##  DE MÁQUINAS                                                             ###                ###
+##  PBR: Muestra el menú y según la opción escogida pide los datos y        ###
+##       llama a la función que corresponda                                 ###
 ##                                                                          ###
-##  PBR: El script recorrerá las líneas del archivo de configuración        ###
-##       de proxmox que tiene asociados los usuarios a sus pool y a sus     ###
-##       máquinas. Por cada usuario mostrará sus MV                         ###
 ##                                                                          ###
 ##                                                                          ###
 ##                                                                          ###
 ###############################################################################
 
-import subprocess
 from ListarMVusuario import listarMVusuario
-def listarMVgrupo(grupo):
+from ListarMVtodos import listarMVtodos
+from ListarMVgrupo import listarMVgrupo
 
-    #Abrimos el archivo de configuración y buscamos las líneas donde se almacenan el id
-    #de las máquinas del usuario
-    
-    try:
-        f=open("/etc/pve/user.cfg",'r')
-    except FileNotFoundError:
-        print("No se ha podido localizar el archivo de configuración")
-    for linea in f:
-        linea=linea.rstrip()
-        if linea!='':# nos saltamos las líneas vacías
-            valores=linea.split(":")
-            if valores[0]=='group' and valores[1]==grupo: #hemos encontrado el grupo
-                miembros=valores[2].split(',') #creamos una lista para los miembros del grupo
-                print(miembros)
-                for usuario in miembros:
-                    nombre=usuario.split('@')[0] #le quitamos @pve
-                    
-                    listarMVusuario(nombre)
-            
+def menu():
+    print("1- Mostrar las máquinas de un usuario")
+    print("2- Mostrar las máquinas de los usuarios de un grupo")
+    print("3- Mostrar todas las máquinas de todos los usuarios")
+    op=input("Acción a realizar (1,2,3): ")
+    return(op)
+
+def listarMV():
+    op=menu()
+    if(op=='1'):
+        usuario=input("Introduzca el nombre del usuario ")
+        listarMVusuario(usuario)
+    elif(op=='2'):
+        grupo=input("Introduzca el nombre del grupo ")
+        listarMVgrupo(grupo)
+    elif(op=='3'):
+        listarMVtodos()
+
     return 0
 
 def main(args):
@@ -41,12 +40,6 @@ def main(args):
 
 if __name__=='__main__':
     import sys
-    import argparse
-    parser=argparse.ArgumentParser()
-    parser.add_argument("grupo",
-                        type=str,
-                        help="Grupo del cual se quieren mostrar las máquinas")
-    args=parser.parse_args()
-    listarMVgrupo(args.grupo)
+    listarMV()
     sys.exit(main(sys.argv))
 

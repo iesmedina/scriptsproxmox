@@ -28,7 +28,7 @@ def listarMVgrupo(grupo):
             valores=linea.split(":")
             if valores[0]=='group' and valores[1]==grupo: #hemos encontrado el grupo
                 miembros=valores[2].split(',') #creamos una lista para los miembros del grupo
-                print(miembros)
+
                 for usuario in miembros:
                     nombre=usuario.split('@')[0] #le quitamos @pve
                     
