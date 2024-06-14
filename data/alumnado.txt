@@ -13,4 +13,4 @@ nomipe,nomipe,1ASIR
 ruboje,ruboje,1ASIR
 rugajo,rugajo,1ASIR
 romufr,romufr,1ASIR
-pepito,pepito,1ASIR
+prueba,prueba,1ASIR
